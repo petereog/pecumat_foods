@@ -46,7 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () => Get.offNamed(Routes.HOME),
+                onTap: () => Get.offNamed(Routes.SIGN),
                 child: Container(
                   width: 353,
                   height: 67,
