@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../routes/app_pages.dart';
+import 'package:pecumat_foods/routes/app_pages.dart';
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
