@@ -33,7 +33,7 @@ class _SelectLocationState extends State<SelectLocation> {
             children: [
               const SizedBox(height: 20),
               Image.asset(
-                'assets/images/8140 1.png',
+                'assets/images/illustration.png',
                 height: 170,
               ),
               const SizedBox(height: 40),

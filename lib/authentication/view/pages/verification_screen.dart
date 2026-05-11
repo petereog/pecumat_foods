@@ -48,7 +48,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
+            Text('code', style: TextStyle(fontWeight: FontWeight.w200, ),),
             Pinput(
               length: 4,
               defaultPinTheme: defaultTheme,
@@ -63,18 +64,37 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 debugPrint(pin);
               },
             ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    // TODO: Implement resend code logic
+                  },
+                  child: const Text(
+                    'Resend code',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                FloatingActionButton(
+                  onPressed: () => Get.toNamed(Routes.SELECTLOCATION),
+                  backgroundColor: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: const Icon(Icons.arrow_forward_ios_outlined, color: Colors.white),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(Routes.SELECTLOCATION),
-        backgroundColor: Colors.green,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: const Icon(Icons.arrow_forward_ios_outlined, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
