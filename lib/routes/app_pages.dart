@@ -4,7 +4,8 @@ import '../home/view/pages/homescreen.dart';
 import '../authentication/view/pages/signin_screen.dart';
 import '../authentication/view/pages/number_screen.dart';
 import '../authentication/view/pages/verification_screen.dart';
-import '../authentication/view/pages/select_location_screen.dart';
+import '../authentication/view/pages/select_location.dart';
+
 
 part 'app_routes.dart';
 
@@ -33,8 +34,8 @@ class AppPages {
       page: () => const VerificationScreen(),
     ),
     GetPage(
-      name: _Paths.LOCATION,
-      page: () => const SelectLocationScreen(),
+      name: _Paths.SELECTLOCATION,
+      page: () => const SelectLocation(),
     ),
   ];
 }

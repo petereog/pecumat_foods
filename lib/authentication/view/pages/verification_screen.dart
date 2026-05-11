@@ -67,7 +67,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(Routes.LOCATION),
+        onPressed: () => Get.toNamed(Routes.SELECTLOCATION),
         backgroundColor: Colors.green,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),

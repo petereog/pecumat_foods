@@ -6,7 +6,7 @@ abstract class Routes {
   static const SIGN = _Paths.SIGN;
   static const NUMBERSCREEN = _Paths.NUMBERSCREEN;
   static const VERIFICATION = _Paths.VERIFICATION;
-  static const LOCATION = _Paths.LOCATION;
+  static const SELECTLOCATION = _Paths.SELECTLOCATION;
 }
 
 abstract class _Paths {
@@ -15,5 +15,5 @@ abstract class _Paths {
   static const SIGN = '/sign';
   static const NUMBERSCREEN = '/numberscreen';
   static const VERIFICATION = '/verification';
-  static const LOCATION = '/location';
+  static const SELECTLOCATION = '/selectlocation';
 }
