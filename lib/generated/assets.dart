@@ -58,11 +58,17 @@ class $AssetsImagesGen {
   final AssetGenImage broiler = const AssetGenImage(
     'assets/images/broiler.png',
   );
+  final AssetGenImage cococolaCan = const AssetGenImage(
+    'assets/images/cococola can.png',
+  );
   final AssetGenImage cookingOil = const AssetGenImage(
     'assets/images/cooking oil.png',
   );
   final AssetGenImage dairyAndEggs = const AssetGenImage(
     'assets/images/dairy and eggs.png',
+  );
+  final AssetGenImage dietCoke = const AssetGenImage(
+    'assets/images/diet coke.png',
   );
   final AssetGenImage fishAndMeat = const AssetGenImage(
     'assets/images/fish and meat.png',
@@ -75,11 +81,18 @@ class $AssetsImagesGen {
     'assets/images/illustration.png',
   );
   final AssetGenImage pepper = const AssetGenImage('assets/images/pepper.png');
+  final AssetGenImage pepsi = const AssetGenImage('assets/images/pepsi.png');
   final AssetGenImage redApple = const AssetGenImage(
     'assets/images/red apple.png',
   );
   final AssetGenImage rice = const AssetGenImage('assets/images/rice.png');
+  final AssetGenImage spriteCan = const AssetGenImage(
+    'assets/images/sprite can.png',
+  );
   final SvgGenImage store1 = const SvgGenImage('assets/images/store 1.svg');
+  final AssetGenImage treeTopJuiceAppleGrape64oz1 = const AssetGenImage(
+    'assets/images/tree-top-juice-apple-grape-64oz 1.png',
+  );
 }
 
 class AssetGenImage {

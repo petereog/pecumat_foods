@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../controller/cart_controller.dart';
+import '../../../../data/models/product_model.dart';
+import '../product_detail/product_detail_screen.dart';
 
 class ShopScreen extends StatelessWidget {
   const ShopScreen({super.key});
@@ -7,6 +11,9 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Inject CartController
+    final CartController cartController = Get.put(CartController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -84,11 +91,26 @@ class ShopScreen extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildProductCard('Organic Bananas', '7pcs, Price', '₦4,900', 'assets/images/banna.png'),
+                    _buildProductCard(
+                      Product(name: 'Organic Bananas', description: '7pcs, Price', price: '4.99', imagePath: 'assets/images/banna.png', unit: '7pcs'),
+                      cartController
+                    ),
                     const SizedBox(width: 15),
-                    _buildProductCard('Red Apple', '1kg, Price', '₦4,900', 'assets/images/red apple.png'),
+                    _buildProductCard(
+                      Product(
+                        name: 'Naturel Red Apple',
+                        description: 'Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.',
+                        price: '4.99',
+                        imagePath: 'assets/images/red apple.png',
+                        unit: '1kg, Price',
+                      ),
+                      cartController
+                    ),
                     const SizedBox(width: 15),
-                    _buildProductCard('Ginger', '250g, Price', '₦2,900', 'assets/images/ginger.png'),
+                    _buildProductCard(
+                      Product(name: 'Ginger', description: '250g, Price', price: '2.99', imagePath: 'assets/images/ginger.png', unit: '250g'),
+                      cartController
+                    ),
                   ],
                 ),
               ),
@@ -100,11 +122,20 @@ class ShopScreen extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildProductCard('Beef Bone', '1kg, Price', '₦4,900', 'assets/images/beefbone.png'),
+                    _buildProductCard(
+                      Product(name: 'Beef Bone', description: '1kg, Price', price: '4.99', imagePath: 'assets/images/beefbone.png', unit: '1kg'),
+                      cartController
+                    ),
                     const SizedBox(width: 15),
-                    _buildProductCard('Broiler Chicken', '1kg, Price', '₦4,900', 'assets/images/broiler.png'),
+                    _buildProductCard(
+                      Product(name: 'Broiler Chicken', description: '1kg, Price', price: '4.99', imagePath: 'assets/images/broiler.png', unit: '1kg'),
+                      cartController
+                    ),
                     const SizedBox(width: 15),
-                    _buildProductCard('Red Pepper', '1kg, Price', '₦4,900', 'assets/images/pepper.png'),
+                    _buildProductCard(
+                      Product(name: 'Red Pepper', description: '1kg, Price', price: '4.99', imagePath: 'assets/images/pepper.png', unit: '1kg'),
+                      cartController
+                    ),
                   ],
                 ),
               ),
@@ -190,66 +221,90 @@ class ShopScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(String name, String weight, String price, String imagePath) {
-    return Container(
-      width: 173,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFE2E2E2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Center(
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons.broken_image, size: 50, color: Colors.grey);
-                },
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Text(
-            name,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            weight,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                price,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+  Widget _buildProductCard(Product product, CartController controller) {
+    return GestureDetector(
+      onTap: () => Get.to(() => ProductDetailScreen(product: product)),
+      child: Container(
+        width: 173,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: const Color(0xFFE2E2E2)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Center(
+                child: Hero(
+                  tag: product.name,
+                  child: Image.asset(
+                    product.imagePath,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(Icons.broken_image, size: 50, color: Colors.grey);
+                    },
+                  ),
                 ),
               ),
-              Container(
-                height: 45,
-                width: 45,
-                decoration: BoxDecoration(
-                  color: primaryColor,
+            ),
+            const SizedBox(height: 15),
+            Text(
+              product.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              product.description,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '₦${product.price}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    controller.addItem(product);
+                    Get.snackbar(
+                      "Added to Cart",
+                      "${product.name} has been added.",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: primaryColor,
+                      colorText: Colors.white,
+                      duration: const Duration(seconds: 1),
+                    );
+                  },
                   borderRadius: BorderRadius.circular(17),
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(17),
+                    ),
+                    child: const Icon(Icons.add, color: Colors.white),
+                  ),
                 ),
-                child: const Icon(Icons.add, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

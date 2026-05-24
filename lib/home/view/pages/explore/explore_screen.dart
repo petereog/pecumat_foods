@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'category_products_screen.dart';
+import '../../../../data/models/product_model.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -88,6 +91,7 @@ class ExploreScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final category = categories[index];
                   return _buildCategoryCard(
+                    context,
                     category['title'],
                     category['color'].withAlpha(30),
                     category['image'],
@@ -103,12 +107,40 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryCard(String title, Color bgColor, String imagePath, Color borderColor) {
-    return Container(
+  Widget _buildCategoryCard(BuildContext context, String title, Color bgColor, String imagePath, Color borderColor) {
+    return GestureDetector(
+      onTap: () {
+        if (title.contains('Beverages')) {
+          Get.to(() => CategoryProductsScreen(
+            title: 'Beverages',
+            products: [
+              Product(name: 'Diet Coke', description: '355ml, Price', price: '1.99', imagePath: 'assets/images/diet coke.png', unit: '355ml'),
+              Product(name: 'Sprite Can', description: '325ml, Price', price: '1.50', imagePath: 'assets/images/sprite can.png', unit: '325ml'),
+              Product(name: 'Apple & Grape Juice', description: '2L, Price', price: '15.99', imagePath: 'assets/images/tree-top-juice-apple-grape-64oz 1.png', unit: '2L'),
+              Product(name: 'Orange Juice', description: '2L, Price', price: '15.99', imagePath: 'assets/images/beverages.png', unit: '2L'),
+              Product(name: 'Coca Cola Can', description: '325ml, Price', price: '4.99', imagePath: 'assets/images/cococola can.png', unit: '325ml'),
+              Product(name: 'Pepsi Can', description: '330ml, Price', price: '4.99', imagePath: 'assets/images/pepsi.png', unit: '330ml'),
+            ],
+          ));
+        } else if (title.contains('Dairy & Eggs')) {
+          Get.to(() => CategoryProductsScreen(
+            title: 'Egg',
+            products: [
+              Product(name: 'Egg Chicken Red', description: '4pcs, Price', price: '1.99', imagePath: 'assets/images/dairy and eggs.png', unit: '4pcs'),
+              Product(name: 'Egg Chicken White', description: '180g, Price', price: '1.50', imagePath: 'assets/images/dairy and eggs.png', unit: '180g'),
+              Product(name: 'Egg Pasta', description: '30gm, Price', price: '15.99', imagePath: 'assets/images/dairy and eggs.png', unit: '30gm'),
+              Product(name: 'Egg Noodles', description: '2L, Price', price: '15.99', imagePath: 'assets/images/dairy and eggs.png', unit: '2L'),
+              Product(name: 'Mayonnais Eggless', description: '325ml, Price', price: '4.99', imagePath: 'assets/images/dairy and eggs.png', unit: '325ml'),
+              Product(name: 'Egg Noodles Spicy', description: '330ml, Price', price: '4.99', imagePath: 'assets/images/dairy and eggs.png', unit: '330ml'),
+            ],
+          ));
+        }
+      },
+      child: Container(
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: borderColor.withOpacity(0.7)),
+        border: Border.all(color: borderColor.withAlpha((0.7 * 255).toInt())),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -126,6 +158,6 @@ class ExploreScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }
