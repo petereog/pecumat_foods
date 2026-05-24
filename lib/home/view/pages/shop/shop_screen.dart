@@ -36,7 +36,7 @@ class ShopScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      'Khulna, Bangladesh',
+                      'Obawole, Ifako ijaiye',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -76,37 +76,35 @@ class ShopScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 25),
-              // Section Header
+              // Exclusive Offer Section
               _buildSectionHeader('Exclusive Offer', () {}),
               const SizedBox(height: 15),
-              // Horizontal list of products
               SizedBox(
                 height: 250,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildProductCard('Organic Bananas', '7pcs, Price', '\$4.99', 'assets/images/banna.png'),
+                    _buildProductCard('Organic Bananas', '7pcs, Price', '₦4,900', 'assets/images/banna.png'),
                     const SizedBox(width: 15),
-                    _buildProductCard('Red Apple', '1kg, Price', '\$4.99', 'assets/images/red apple.png'),
+                    _buildProductCard('Red Apple', '1kg, Price', '₦4,900', 'assets/images/red apple.png'),
                     const SizedBox(width: 15),
-                    _buildProductCard('Ginger', '250g, Price', '\$2.99', 'assets/images/ginger.png'),
+                    _buildProductCard('Ginger', '250g, Price', '₦2,900', 'assets/images/ginger.png'),
                   ],
                 ),
               ),
               const SizedBox(height: 25),
               _buildSectionHeader('Best Selling', () {}),
               const SizedBox(height: 15),
-              // Another horizontal list
               SizedBox(
                 height: 250,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildProductCard('Beef Bone', '1kg, Price', '\$4.99', 'assets/images/pngfuel 5.png'),
+                    _buildProductCard('Beef Bone', '1kg, Price', '₦4,900', 'assets/images/beefbone.png'),
                     const SizedBox(width: 15),
-                    _buildProductCard('Broiler Chicken', '1kg, Price', '\$4.99', 'assets/images/pngfuel 3.png'),
+                    _buildProductCard('Broiler Chicken', '1kg, Price', '₦4,900', 'assets/images/broiler.png'),
                     const SizedBox(width: 15),
-                    _buildProductCard('Red Pepper', '1kg, Price', '\$4.99', 'assets/images/pepper.png'),
+                    _buildProductCard('Red Pepper', '1kg, Price', '₦4,900', 'assets/images/pepper.png'),
                   ],
                 ),
               ),
