@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pecumat_foods/routes/app_pages.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

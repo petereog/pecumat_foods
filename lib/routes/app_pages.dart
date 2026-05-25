@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
-import '../onboarding/view/pages/onboarding_screen.dart';
-import '../home/view/pages/homescreen.dart';
-import '../authentication/view/pages/signin_screen.dart';
-import '../authentication/view/pages/number_screen.dart';
-import '../authentication/view/pages/verification_screen.dart';
-import '../authentication/view/pages/select_location.dart';
-
+import '../features/onboarding/view/onboarding_screen.dart';
+import '../features/home/view/homescreen.dart';
+import '../features/auth/view/signin_screen.dart';
+import '../features/auth/view/number_screen.dart';
+import '../features/auth/view/verification_screen.dart';
+import '../features/auth/view/select_location.dart';
 
 part 'app_routes.dart';
 
