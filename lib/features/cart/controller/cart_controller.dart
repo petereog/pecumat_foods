@@ -1,83 +1,97 @@
 import 'package:get/get.dart';
-import '../model/cart_item_model.dart';
+import '../../../core/network/cart_service.dart';
 import '../../../data/models/product_model.dart';
+import '../model/cart_item_model.dart';
 
 class CartController extends GetxController {
   var cartItems = <CartItem>[].obs;
+  var isLoading = false.obs;
+  var totalPrice = 0.0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    addDemoItems();
+    fetchCart();
   }
 
-  void addDemoItems() {
-    cartItems.clear();
-    cartItems.addAll([
-      CartItem(
-        product: Product(
-          name: 'Bell Pepper Red',
-          description: '1kg, Price',
-          price: '4.99',
-          imagePath: 'assets/images/pepper.png',
-          unit: '1kg',
-        ),
-      ),
-      CartItem(
-        product: Product(
-          name: 'Egg Chicken Red',
-          description: '4pcs, Price',
-          price: '1.99',
-          imagePath: 'assets/images/dairy and eggs.png',
-          unit: '4pcs',
-        ),
-      ),
-      CartItem(
-        product: Product(
-          name: 'Organic Bananas',
-          description: '12kg, Price',
-          price: '3.00',
-          imagePath: 'assets/images/banna.png',
-          unit: '12kg',
-        ),
-      ),
-      CartItem(
-        product: Product(
-          name: 'Ginger',
-          description: '250gm, Price',
-          price: '2.99',
-          imagePath: 'assets/images/ginger.png',
-          unit: '250gm',
-        ),
-      ),
-    ]);
-  }
-
-  void addItem(Product product) {
-    int index = cartItems.indexWhere((item) => item.product.name == product.name);
-    if (index != -1) {
-      cartItems[index].quantity++;
-      cartItems.refresh();
-    } else {
-      cartItems.add(CartItem(product: product));
+  Future<void> fetchCart() async {
+    try {
+      isLoading.value = true;
+      final result = await CartService.getCart();
+      if (result['success'] == true) {
+        final items = result['cart']['items'] as List? ?? [];
+        cartItems.value = items.map((item) {
+          final product = item['product'];
+          final images = product['images'] as List?;
+          return CartItem(
+            productId: product['_id'],
+            product: Product(
+              name: product['name'] ?? '',
+              description: product['name'] ?? '',
+              price: item['price'].toString(),
+              imagePath: (images != null && images.isNotEmpty) ? images[0] : '',
+              unit: '',
+            ),
+            quantity: item['quantity'],
+          );
+        }).toList();
+        totalPrice.value = (result['cart']['totalPrice'] ?? 0).toDouble();
+      }
+    } catch (e) {
+      print('Cart fetch error: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  void removeItem(int index) {
-    cartItems.removeAt(index);
+  Future<void> addItem(Product product, {String? productId}) async {
+    try {
+      if (productId == null) {
+        int index = cartItems.indexWhere((item) => item.product.name == product.name);
+        if (index != -1) {
+          cartItems[index].quantity++;
+          cartItems.refresh();
+        } else {
+          cartItems.add(CartItem(product: product));
+        }
+        return;
+      }
+      final result = await CartService.addToCart(productId, 1);
+      if (result['success'] == true) {
+        await fetchCart();
+      }
+    } catch (e) {
+      print('Add to cart error: $e');
+    }
   }
 
-  void incrementQuantity(int index) {
+  Future<void> removeItem(int index) async {
+    try {
+      final productId = cartItems[index].productId;
+      if (productId != null) {
+        await CartService.removeFromCart(productId);
+        await fetchCart();
+      } else {
+        cartItems.removeAt(index);
+      }
+    } catch (e) {
+      print('Remove from cart error: $e');
+    }
+  }
+
+  Future<void> incrementQuantity(int index) async {
     cartItems[index].quantity++;
     cartItems.refresh();
+    totalPrice.value = cartItems.fold(0.0, (sum, item) => sum + item.totalPrice);
   }
 
-  void decrementQuantity(int index) {
+  Future<void> decrementQuantity(int index) async {
     if (cartItems[index].quantity > 1) {
       cartItems[index].quantity--;
       cartItems.refresh();
+      totalPrice.value = cartItems.fold(0.0, (sum, item) => sum + item.totalPrice);
     } else {
-      removeItem(index);
+      await removeItem(index);
     }
   }
 

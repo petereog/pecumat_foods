@@ -14,91 +14,69 @@ class $AssetsImagesGen {
 
   final AssetGenImage a6011 = const AssetGenImage('assets/images/601 1.png');
   final AssetGenImage a882858DownloadSackOfRicePng1 = const AssetGenImage(
-    'assets/images/8-82858_download-sack-of-rice-png 1.png',
-  );
+      'assets/images/8-82858_download-sack-of-rice-png 1.png');
   final AssetGenImage a81401 = const AssetGenImage('assets/images/8140 1.png');
   final AssetGenImage group2 = const AssetGenImage(
-    'assets/images/Group (2).png',
-  );
+      'assets/images/Group (2).png');
   final SvgGenImage group3 = const SvgGenImage('assets/images/Group 3.svg');
   final AssetGenImage group6795 = const AssetGenImage(
-    'assets/images/Group 6795.png',
-  );
+      'assets/images/Group 6795.png');
   final AssetGenImage group6807 = const AssetGenImage(
-    'assets/images/Group 6807.png',
-  );
+      'assets/images/Group 6807.png');
   final AssetGenImage vectorPng = const AssetGenImage(
-    'assets/images/Vector.png',
-  );
+      'assets/images/Vector.png');
   final SvgGenImage vectorSvg = const SvgGenImage('assets/images/Vector.svg');
   final AssetGenImage vector1Png = const AssetGenImage(
-    'assets/images/Vector (1).png',
-  );
+      'assets/images/Vector (1).png');
   final SvgGenImage vector1Svg = const SvgGenImage(
-    'assets/images/Vector (1).svg',
-  );
+      'assets/images/Vector (1).svg');
   final SvgGenImage vector2 = const SvgGenImage('assets/images/Vector (2).svg');
   final AssetGenImage backeryAndSnacks = const AssetGenImage(
-    'assets/images/backery and snacks.png',
-  );
+      'assets/images/backery and snacks.png');
   final AssetGenImage banna = const AssetGenImage('assets/images/banna.png');
   final AssetGenImage banner = const AssetGenImage('assets/images/banner.png');
   final AssetGenImage beefbone = const AssetGenImage(
-    'assets/images/beefbone.png',
-  );
+      'assets/images/beefbone.png');
   final AssetGenImage beverages = const AssetGenImage(
-    'assets/images/beverages.png',
-  );
+      'assets/images/beverages.png');
   final AssetGenImage bookmark1Png = const AssetGenImage(
-    'assets/images/bookmark 1.png',
-  );
+      'assets/images/bookmark 1.png');
   final SvgGenImage bookmark1Svg = const SvgGenImage(
-    'assets/images/bookmark 1.svg',
-  );
+      'assets/images/bookmark 1.svg');
   final AssetGenImage broiler = const AssetGenImage(
-    'assets/images/broiler.png',
-  );
+      'assets/images/broiler.png');
   final AssetGenImage cococolaCan = const AssetGenImage(
-    'assets/images/cococola can.png',
-  );
+      'assets/images/cococola can.png');
   final AssetGenImage cookingOil = const AssetGenImage(
-    'assets/images/cooking oil.png',
-  );
+      'assets/images/cooking oil.png');
   final AssetGenImage dairyAndEggs = const AssetGenImage(
-    'assets/images/dairy and eggs.png',
-  );
+      'assets/images/dairy and eggs.png');
   final AssetGenImage dietCoke = const AssetGenImage(
-    'assets/images/diet coke.png',
-  );
+      'assets/images/diet coke.png');
   final AssetGenImage fishAndMeat = const AssetGenImage(
-    'assets/images/fish and meat.png',
-  );
+      'assets/images/fish and meat.png');
   final AssetGenImage frashFruit = const AssetGenImage(
-    'assets/images/frash fruit.png',
-  );
+      'assets/images/frash fruit.png');
   final AssetGenImage ginger = const AssetGenImage('assets/images/ginger.png');
   final AssetGenImage illustration = const AssetGenImage(
-    'assets/images/illustration.png',
-  );
+      'assets/images/illustration.png');
   final AssetGenImage pepper = const AssetGenImage('assets/images/pepper.png');
   final AssetGenImage pepsi = const AssetGenImage('assets/images/pepsi.png');
   final AssetGenImage redApple = const AssetGenImage(
-    'assets/images/red apple.png',
-  );
+      'assets/images/red apple.png');
   final AssetGenImage rice = const AssetGenImage('assets/images/rice.png');
   final AssetGenImage spriteCan = const AssetGenImage(
-    'assets/images/sprite can.png',
-  );
+      'assets/images/sprite can.png');
   final SvgGenImage store1 = const SvgGenImage('assets/images/store 1.svg');
   final AssetGenImage treeTopJuiceAppleGrape64oz1 = const AssetGenImage(
-    'assets/images/tree-top-juice-apple-grape-64oz 1.png',
-  );
+      'assets/images/tree-top-juice-apple-grape-64oz 1.png');
 }
 
 class AssetGenImage {
   const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
+
 
   final Size? size;
   final Set<String> flavors;
@@ -156,8 +134,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   Widget custom({
@@ -235,3 +220,4 @@ class SvgGenImage {
 
   String get keyName => _assetName;
 }
+

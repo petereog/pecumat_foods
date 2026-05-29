@@ -3,8 +3,15 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field_v2/intl_phone_field.dart';
 import '../../../routes/app_pages.dart';
 
-class NumberScreen extends StatelessWidget {
+class NumberScreen extends StatefulWidget {
   const NumberScreen({super.key});
+
+  @override
+  State<NumberScreen> createState() => _NumberScreenState();
+}
+
+class _NumberScreenState extends State<NumberScreen> {
+  String phoneNumber = '';
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +42,30 @@ class NumberScreen extends StatelessWidget {
               decoration: const InputDecoration(
                 labelText: 'Mobile Number',
                 border: UnderlineInputBorder(),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF53B175)),
+                ),
               ),
               initialCountryCode: 'NG',
+              onChanged: (phone) {
+                phoneNumber = phone.completeNumber;
+              },
             ),
             const Spacer(),
             Align(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
-                onPressed: () => Get.toNamed(Routes.VERIFICATION),
+                onPressed: () {
+                  if (phoneNumber.isEmpty) {
+                    Get.snackbar(
+                      'Error',
+                      'Please enter your phone number',
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                    return;
+                  }
+                  Get.toNamed(Routes.VERIFICATION);
+                },
                 backgroundColor: const Color(0xFF53B175),
                 child: const Icon(Icons.arrow_forward_ios, color: Colors.white),
               ),

@@ -2,10 +2,12 @@ import '../../../data/models/product_model.dart';
 
 class CartItem {
   final Product product;
+  final String? productId;
   int quantity;
 
   CartItem({
     required this.product,
+    this.productId,
     this.quantity = 1,
   });
 

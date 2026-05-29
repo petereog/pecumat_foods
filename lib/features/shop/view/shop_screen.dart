@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../cart/controller/cart_controller.dart';
+import '../controller/product_controller.dart';
 import '../../../data/models/product_model.dart';
 import '../../product_details/view/product_detail_screen.dart';
 import '../../explore/view/search_screen.dart';
@@ -13,6 +15,7 @@ class ShopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CartController cartController = Get.put(CartController());
+    final ProductController productController = Get.put(ProductController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -20,10 +23,7 @@ class ShopScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        title: Image.asset(
-          'assets/images/Group (2).png',
-          height: 30,
-        ),
+        title: Image.asset('assets/images/Group (2).png', height: 30),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,10 +36,7 @@ class ShopScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/Vector (1).png',
-                      height: 18,
-                    ),
+                    Image.asset('assets/images/Vector (1).png', height: 18),
                     const SizedBox(width: 8),
                     const Text(
                       'Obawole, Ifako ijaiye',
@@ -85,77 +82,63 @@ class ShopScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 25),
-              _buildSectionHeader('Exclusive Offer', () {}),
+              _buildSectionHeader('All Products', () {}),
               const SizedBox(height: 15),
-              SizedBox(
-                height: 250,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
+              Obx(() {
+                if (productController.isLoading.value) {
+                  return const SizedBox(
+                    height: 250,
+                    child: Center(child: CircularProgressIndicator(color: primaryColor)),
+                  );
+                }
+                if (productController.products.isEmpty) {
+                  return const SizedBox(
+                    height: 250,
+                    child: Center(child: Text('No products found')),
+                  );
+                }
+                return SizedBox(
+                  height: 250,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: productController.products.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 15),
+                    itemBuilder: (context, index) {
+                      final product = productController.products[index];
+                      return _buildApiProductCard(product, cartController);
+                    },
+                  ),
+                );
+              }),
+              const SizedBox(height: 25),
+              Obx(() {
+                if (productController.categories.isEmpty) return const SizedBox();
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildProductCard(
-                      Product(name: 'Organic Bananas', description: '7pcs, Price', price: '4.99', imagePath: 'assets/images/banna.png', unit: '7pcs'),
-                      cartController
-                    ),
-                    const SizedBox(width: 15),
-                    _buildProductCard(
-                      Product(
-                        name: 'Naturel Red Apple',
-                        description: 'Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.',
-                        price: '4.99',
-                        imagePath: 'assets/images/red apple.png',
-                        unit: '1kg, Price',
+                    _buildSectionHeader('Categories', () {}),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      height: 105,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: productController.categories.length,
+                        separatorBuilder: (_, __) => const SizedBox(width: 15),
+                        itemBuilder: (context, index) {
+                          final category = productController.categories[index];
+                          return GestureDetector(
+                            onTap: () => productController.fetchProducts(category: category['name']),
+                            child: _buildCategoryItem(
+                              category['name'],
+                              const Color(0xFF53B175).withAlpha(30),
+                            ),
+                          );
+                        },
                       ),
-                      cartController
-                    ),
-                    const SizedBox(width: 15),
-                    _buildProductCard(
-                      Product(name: 'Ginger', description: '250g, Price', price: '2.99', imagePath: 'assets/images/ginger.png', unit: '250g'),
-                      cartController
                     ),
                   ],
-                ),
-              ),
-              const SizedBox(height: 25),
-              _buildSectionHeader('Best Selling', () {}),
-              const SizedBox(height: 15),
-              SizedBox(
-                height: 250,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildProductCard(
-                      Product(name: 'Beef Bone', description: '1kg, Price', price: '4.99', imagePath: 'assets/images/beefbone.png', unit: '1kg'),
-                      cartController
-                    ),
-                    const SizedBox(width: 15),
-                    _buildProductCard(
-                      Product(name: 'Broiler Chicken', description: '1kg, Price', price: '4.99', imagePath: 'assets/images/broiler.png', unit: '1kg'),
-                      cartController
-                    ),
-                    const SizedBox(width: 15),
-                    _buildProductCard(
-                      Product(name: 'Red Pepper', description: '1kg, Price', price: '4.99', imagePath: 'assets/images/pepper.png', unit: '1kg'),
-                      cartController
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 25),
-              _buildSectionHeader('Groceries', () {}),
-              const SizedBox(height: 15),
-              SizedBox(
-                height: 105,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildCategoryItem('Pulses', const Color(0xFFF8A44C).withAlpha(30), 'assets/images/8-82858_download-sack-of-rice-png 1.png'),
-                    const SizedBox(width: 15),
-                    _buildCategoryItem('Rice', const Color(0xFF53B175).withAlpha(30), 'assets/images/rice.png'),
-                    const SizedBox(width: 15),
-                    _buildCategoryItem('Pulses', const Color(0xFFF8A44C).withAlpha(30), 'assets/images/8-82858_download-sack-of-rice-png 1.png'),
-                  ],
-                ),
-              ),
+                );
+              }),
               const SizedBox(height: 20),
             ],
           ),
@@ -164,67 +147,21 @@ class ShopScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryItem(String title, Color color, String imagePath) {
-    return Container(
-      width: 250,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            imagePath,
-            width: 70,
-            height: 70,
-            errorBuilder: (context, error, stackTrace) {
-              return const Icon(Icons.broken_image, size: 40, color: Colors.grey);
-            },
-          ),
-          const SizedBox(width: 15),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF3E423F),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget _buildApiProductCard(dynamic product, CartController controller) {
+    final images = product['images'] as List?;
+    final hasImage = images != null && images.isNotEmpty;
 
-  Widget _buildSectionHeader(String title, VoidCallback onSeeAll) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        TextButton(
-          onPressed: onSeeAll,
-          child: const Text(
-            'See all',
-            style: TextStyle(
-              color: primaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProductCard(Product product, CartController controller) {
     return GestureDetector(
-      onTap: () => Get.to(() => ProductDetailScreen(product: product)),
+      onTap: () {
+        final p = Product(
+          name: product['name'] ?? '',
+          description: product['description'] ?? '',
+          price: product['price'].toString(),
+          imagePath: hasImage ? images[0] : '',
+          unit: product['category'] ?? '',
+        );
+        Get.to(() => ProductDetailScreen(product: p));
+      },
       child: Container(
         width: 173,
         padding: const EdgeInsets.all(12),
@@ -237,56 +174,53 @@ class ShopScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Hero(
-                  tag: product.name,
-                  child: Image.asset(
-                    product.imagePath,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.broken_image, size: 50, color: Colors.grey);
-                    },
-                  ),
-                ),
+                child: hasImage
+                    ? CachedNetworkImage(
+                  imageUrl: images[0],
+                  fit: BoxFit.contain,
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                  const Icon(Icons.broken_image, size: 50, color: Colors.grey),
+                )
+                    : const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             Text(
-              product.name,
+              product['name'] ?? '',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Text(
-              product.description,
+              product['category'] ?? '',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '₦${product.price}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  '₦${product['price']}',
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 InkWell(
                   onTap: () {
-                    controller.addItem(product);
+                    final p = Product(
+                      name: product['name'] ?? '',
+                      description: product['description'] ?? '',
+                      price: product['price'].toString(),
+                      imagePath: hasImage ? images[0] : '',
+                      unit: product['category'] ?? '',
+                    );
+                    controller.addItem(p);
                     Get.snackbar(
                       "Added to Cart",
-                      "${product.name} has been added.",
+                      "${product['name']} has been added.",
                       snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: primaryColor,
+                      backgroundColor: const Color(0xFF53B175),
                       colorText: Colors.white,
                       duration: const Duration(seconds: 1),
                     );
@@ -296,7 +230,7 @@ class ShopScreen extends StatelessWidget {
                     height: 45,
                     width: 45,
                     decoration: BoxDecoration(
-                      color: primaryColor,
+                      color: const Color(0xFF53B175),
                       borderRadius: BorderRadius.circular(17),
                     ),
                     child: const Icon(Icons.add, color: Colors.white),
@@ -307,6 +241,50 @@ class ShopScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCategoryItem(String title, Color color) {
+    return Container(
+      width: 150,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF3E423F),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, VoidCallback onSeeAll) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        ),
+        TextButton(
+          onPressed: onSeeAll,
+          child: const Text(
+            'See all',
+            style: TextStyle(
+              color: Color(0xFF53B175),
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

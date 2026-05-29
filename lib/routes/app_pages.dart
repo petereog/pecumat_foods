@@ -5,6 +5,8 @@ import '../features/auth/view/signin_screen.dart';
 import '../features/auth/view/number_screen.dart';
 import '../features/auth/view/verification_screen.dart';
 import '../features/auth/view/select_location.dart';
+import '../features/auth/view/login_screen.dart';
+import '../features/auth/view/signup_screen.dart';
 
 part 'app_routes.dart';
 
@@ -35,6 +37,14 @@ class AppPages {
     GetPage(
       name: _Paths.SELECTLOCATION,
       page: () => const SelectLocation(),
+    ),
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => const LoginScreen(),
+    ),
+    GetPage(
+      name: _Paths.SIGNUP,
+      page: () => const SignupScreen(),
     ),
   ];
 }

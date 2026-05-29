@@ -116,6 +116,20 @@ class _SigninScreenState extends State<SigninScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: TextButton(
+                      onPressed: () => Get.toNamed(Routes.LOGIN),
+                      child: const Text(
+                        'Log in with Email',
+                        style: TextStyle(
+                          color: Color(0xFF53B175),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
