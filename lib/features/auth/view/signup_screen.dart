@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../routes/app_pages.dart';
 import '../auth_controller.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -182,7 +181,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: _authController.isLoading.value
                             ? const CircularProgressIndicator(color: Colors.white)
                             : const Text(
-                          'Sign Up',
+                          'Sing Up',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -209,7 +208,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         Get.back();
                       },
                       child: const Text(
-                        'Login',
+                        'Singup',
                         style: TextStyle(
                           color: Color(0xFF53B175),
                           fontWeight: FontWeight.w600,

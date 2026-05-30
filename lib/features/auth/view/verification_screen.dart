@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import '../../../routes/app_pages.dart';
+import '../otp_controller.dart';
 
-class VerificationScreen extends StatefulWidget {
+class VerificationScreen extends StatelessWidget {
   const VerificationScreen({super.key});
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState();
-}
-
-class _VerificationScreenState extends State<VerificationScreen> {
-  String otp = '';
-
-  @override
   Widget build(BuildContext context) {
+    final OtpController otpController = Get.find<OtpController>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -38,11 +33,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
             ),
             const SizedBox(height: 10),
+            Obx(() => Text(
+              'Code sent to ${otpController.email.value}',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            )),
+            const SizedBox(height: 30),
             const Text(
               'Code',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Pinput(
               length: 4,
               defaultPinTheme: PinTheme(
@@ -69,22 +69,21 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onChanged: (value) => otp = value,
-              onCompleted: (pin) {
-                Get.toNamed(Routes.SELECTLOCATION);
-              },
+              onCompleted: (pin) => otpController.verifyOtp(pin),
             ),
-            const SizedBox(height: 30),
-            GestureDetector(
-              onTap: () {
-                Get.snackbar(
-                  'Code Sent',
-                  'A new code has been sent',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: const Color(0xFF53B175),
-                  colorText: Colors.white,
+            const SizedBox(height: 20),
+            Obx(() {
+              if (otpController.errorMessage.value.isNotEmpty) {
+                return Text(
+                  otpController.errorMessage.value,
+                  style: const TextStyle(color: Colors.red, fontSize: 14),
                 );
-              },
+              }
+              return const SizedBox();
+            }),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () => otpController.resendOtp(),
               child: const Text(
                 'Resend Code',
                 style: TextStyle(
@@ -95,24 +94,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
             ),
             const Spacer(),
-            Align(
+            Obx(() => Align(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
-                onPressed: () {
-                  if (otp.length < 4) {
-                    Get.snackbar(
-                      'Error',
-                      'Please enter the 4-digit code',
-                      snackPosition: SnackPosition.BOTTOM,
-                    );
-                    return;
-                  }
-                  Get.toNamed(Routes.SELECTLOCATION);
-                },
+                onPressed: otpController.isLoading.value ? null : null,
                 backgroundColor: const Color(0xFF53B175),
-                child: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+                child: otpController.isLoading.value
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Icon(Icons.arrow_forward_ios, color: Colors.white),
               ),
-            ),
+            )),
           ],
         ),
       ),

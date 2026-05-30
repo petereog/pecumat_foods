@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../auth/auth_controller.dart';
 import '../../../core/network/auth_service.dart';
-
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 

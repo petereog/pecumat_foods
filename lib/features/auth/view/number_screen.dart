@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field_v2/intl_phone_field.dart';
-import '../../../routes/app_pages.dart';
+import '../otp_controller.dart';
 
 class NumberScreen extends StatefulWidget {
   const NumberScreen({super.key});
@@ -11,6 +11,8 @@ class NumberScreen extends StatefulWidget {
 }
 
 class _NumberScreenState extends State<NumberScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final OtpController _otpController = Get.put(OtpController());
   String phoneNumber = '';
 
   @override
@@ -51,24 +53,59 @@ class _NumberScreenState extends State<NumberScreen> {
                 phoneNumber = phone.completeNumber;
               },
             ),
+            const SizedBox(height: 20),
+            const Text(
+              'Or enter your email',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                hintText: 'example@gmail.com',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFE2E2E2)),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF53B175)),
+                ),
+              ),
+            ),
+            Obx(() {
+              if (_otpController.errorMessage.value.isNotEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                    _otpController.errorMessage.value,
+                    style: const TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                );
+              }
+              return const SizedBox();
+            }),
             const Spacer(),
             Align(
               alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                onPressed: () {
-                  if (phoneNumber.isEmpty) {
+              child: Obx(() => FloatingActionButton(
+                onPressed: _otpController.isSending.value
+                    ? null
+                    : () {
+                  if (_emailController.text.isNotEmpty) {
+                    _otpController.sendOtp(_emailController.text.trim());
+                  } else {
                     Get.snackbar(
                       'Error',
-                      'Please enter your phone number',
+                      'Please enter your email to receive OTP',
                       snackPosition: SnackPosition.BOTTOM,
                     );
-                    return;
                   }
-                  Get.toNamed(Routes.VERIFICATION);
                 },
                 backgroundColor: const Color(0xFF53B175),
-                child: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-              ),
+                child: _otpController.isSending.value
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Icon(Icons.arrow_forward_ios, color: Colors.white),
+              )),
             ),
           ],
         ),

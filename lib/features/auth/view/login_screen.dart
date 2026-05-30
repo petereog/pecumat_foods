@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 60),
                 const Text(
-                  'Login',
+                  'Loging',
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Enter your email and password',
+                  'Enter your emails and password',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey,
@@ -181,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Get.toNamed(Routes.SIGNUP);
                       },
                       child: const Text(
-                        'Sign Up',
+                        'Singup',
                         style: TextStyle(
                           color: Color(0xFF53B175),
                           fontWeight: FontWeight.w600,
