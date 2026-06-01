@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = "https://ecommerce-backend-production-0e7b.up.railway.app/api";
+  static const String baseUrl = "https://ecomerce-backend-1obq.onrender.com/api";
 
   // Auth
   static const String register = "/auth/register";
