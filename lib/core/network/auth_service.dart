@@ -1,25 +1,40 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_constants.dart';
 
 class AuthService {
+  static const Duration timeout = Duration(seconds: 60);
+
   static Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.login}'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
-    return jsonDecode(response.body);
+    try {
+      final response = await http.post(
+        Uri.parse('${ApiConstants.baseUrl}${ApiConstants.login}'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      ).timeout(timeout);
+      return jsonDecode(response.body);
+    } on SocketException {
+      return {'success': false, 'message': 'No internet connection'};
+    } catch (e) {
+      return {'success': false, 'message': 'Server is waking up, please try again'};
+    }
   }
 
   static Future<Map<String, dynamic>> register(String username, String email, String password) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.register}'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'username': username, 'email': email, 'password': password}),
-    );
-    return jsonDecode(response.body);
+    try {
+      final response = await http.post(
+        Uri.parse('${ApiConstants.baseUrl}${ApiConstants.register}'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'username': username, 'email': email, 'password': password}),
+      ).timeout(timeout);
+      return jsonDecode(response.body);
+    } on SocketException {
+      return {'success': false, 'message': 'No internet connection'};
+    } catch (e) {
+      return {'success': false, 'message': 'Server is waking up, please try again'};
+    }
   }
 
   static Future<void> saveToken(String token, String refreshToken) async {
