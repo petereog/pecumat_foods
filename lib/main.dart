@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pecumat_foods/features/auth/auth_binding.dart';
 import 'package:pecumat_foods/routes/app_pages.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Pecumat Foods',
       initialRoute: AppPages.INITIAL,
+      initialBinding: AuthBinding(),
       getPages: AppPages.routes,
     );
   }

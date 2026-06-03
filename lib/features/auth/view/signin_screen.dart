@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_field_v2/intl_phone_field.dart';
 import '../../../routes/app_pages.dart';
 
-class SigninScreen extends StatefulWidget {
+class SigninScreen extends StatelessWidget {
   const SigninScreen({super.key});
 
-  @override
-  State<SigninScreen> createState() => _SigninScreenState();
-}
-
-class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +18,9 @@ class _SigninScreenState extends State<SigninScreen> {
               height: 300,
               fit: BoxFit.cover,
             ),
-            const SizedBox(height: 74,),
+            const SizedBox(height: 50),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -39,16 +33,37 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  IntlPhoneField(
-                    decoration: const InputDecoration(
-                      labelText: 'Phone Number',
-                      border: UnderlineInputBorder(),
+                  
+                  // Phone input area that navigates to dedicated phone screen
+                  InkWell(
+                    onTap: () => Get.toNamed(Routes.NUMBERSCREEN),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: Color(0xFFE2E2E2)),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/images/8140 1.png', width: 30, height: 20, fit: BoxFit.cover,), // Placeholder flag
+                          const SizedBox(width: 15),
+                          const Text(
+                            '+234',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(width: 10),
+                          const Expanded(
+                            child: Text(
+                              'Enter mobile number',
+                              style: TextStyle(color: Colors.grey, fontSize: 18),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    initialCountryCode: 'NG',
-                    onChanged: (phone) {
-                      debugPrint(phone.completeNumber);
-                    },
                   ),
+                  
                   const SizedBox(height: 40),
                   const Center(
                     child: Text(
@@ -61,90 +76,83 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF5383EC),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/Group 6795.png',
-                          width: 22,
-                          height: 22,
-                        ),
-                        const SizedBox(width: 40),
-                        const Text(
-                          'Continue with Google',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+                  
+                  // Social Login Buttons
+                  _buildSocialButton(
+                    'Continue with Google',
+                    const Color(0xFF5383EC),
+                    'assets/images/Group 6795.png',
+                    () {},
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF4A66AC),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/Vector.png',
-                          width: 22,
-                          height: 22,
-                        ),
-                        const SizedBox(width: 40),
-                        const Text(
-                          'Continue with Facebook',
+                  _buildSocialButton(
+                    'Continue with Facebook',
+                    const Color(0xFF4A66AC),
+                    'assets/images/Vector.png',
+                    () {},
+                  ),
+                  
+                  const SizedBox(height: 30),
+                  // Link to Email Login
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Want to use email? ',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      GestureDetector(
+                        onTap: () => Get.toNamed(Routes.LOGIN),
+                        child: const Text(
+                          'Log In',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                            color: Color(0xFF53B175),
                             fontWeight: FontWeight.w600,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: TextButton(
-                      onPressed: () => Get.toNamed(Routes.LOGIN),
-                      child: const Text(
-                        'Log in with Email',
-                        style: TextStyle(
-                          color: Color(0xFF53B175),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
+                    ],
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.offNamed(Routes.NUMBERSCREEN),
-        backgroundColor: Colors.blue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+    );
+  }
+
+  Widget _buildSocialButton(String text, Color color, String asset, VoidCallback onTap) {
+    return Material(
+      color: color,
+      borderRadius: BorderRadius.circular(15),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              Image.asset(asset, width: 22, height: 22),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 22), // Balancing the icon
+            ],
+          ),
         ),
-        child: const Icon(Icons.arrow_forward_ios_outlined, color: Colors.white),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }

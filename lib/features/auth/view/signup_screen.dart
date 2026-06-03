@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 import '../auth_controller.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -15,12 +16,21 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
-  final AuthController _authController = Get.put(AuthController());
+  
+  final AuthController _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+          onPressed: () => Get.back(),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -28,7 +38,6 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 30),
                 Center(
                   child: Image.asset(
                     'assets/images/Group (2).png',
@@ -63,7 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 TextField(
                   controller: _usernameController,
                   decoration: const InputDecoration(
-                    hintText: 'John Doe',
+                    hintText: 'Afsar Hossen Shuvo',
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFE2E2E2)),
                     ),
@@ -85,7 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    hintText: 'example@gmail.com',
+                    hintText: 'imshuvo97@gmail.com',
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFE2E2E2)),
                     ),
@@ -146,52 +155,45 @@ class _SignupScreenState extends State<SignupScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                Obx(() {
-                  if (_authController.errorMessage.value.isNotEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
+                const SizedBox(height: 30),
+                Obx(() => _authController.errorMessage.value.isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
                       child: Text(
                         _authController.errorMessage.value,
-                        style: const TextStyle(color: Colors.red, fontSize: 14),
+                        style: const TextStyle(color: Colors.red),
                       ),
-                    );
-                  }
-                  return const SizedBox();
-                }),
-                Obx(() {
-                  return Material(
-                    color: const Color(0xFF53B175),
+                    )
+                  : const SizedBox.shrink()),
+                Obx(() => Material(
+                  color: const Color(0xFF53B175),
+                  borderRadius: BorderRadius.circular(19),
+                  child: InkWell(
+                    onTap: _authController.isLoading.value
+                      ? null
+                      : () => _authController.register(
+                        _usernameController.text.trim(),
+                        _emailController.text.trim(),
+                        _passwordController.text.trim(),
+                      ),
                     borderRadius: BorderRadius.circular(19),
-                    child: InkWell(
-                      onTap: _authController.isLoading.value
-                          ? null
-                          : () {
-                        _authController.register(
-                          _usernameController.text.trim(),
-                          _emailController.text.trim(),
-                          _passwordController.text.trim(),
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(19),
-                      child: Container(
-                        height: 67,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: _authController.isLoading.value
-                            ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text(
-                          'Sing Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                    child: Container(
+                      height: 67,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: _authController.isLoading.value
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            'Sing Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ),
                     ),
-                  );
-                }),
+                  ),
+                )),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -204,11 +206,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
+                      onTap: () => Get.back(),
                       child: const Text(
-                        'Singup',
+                        'Log In',
                         style: TextStyle(
                           color: Color(0xFF53B175),
                           fontWeight: FontWeight.w600,
